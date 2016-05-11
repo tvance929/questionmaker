@@ -1,0 +1,131 @@
+body {
+    font-family: sans-serif;
+    background-color: #315481;
+    background-attachment: fixed;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0;
+    margin: 0;
+    font-size: 14px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    min-height: 100%;
+    background: white;
+}
+
+header {
+    /*background: #d2edf4;
+    background-image: linear-gradient(to bottom, #d0edf5, #e1e5f0 100%);*/
+    padding: 20px 15px 15px 15px;
+    position: relative;
+}
+
+h1 {
+    font-size: 1.5em;
+    margin: 0;
+    margin-bottom: 10px;
+    display: inline-block;
+    margin-right: 1em;
+}
+
+form {
+    margin-top: 10px;
+    margin-bottom: -10px;
+    position: relative;
+}
+
+.new-question input {
+    box-sizing: border-box;
+    padding: 15px;
+    background: transparent;
+    /*border: none;
+         padding-right: 80px;
+    */
+    width: 100%;
+    font-size: 1em;
+    border-radius: 10px;
+    margin: 10px;
+}
+
+    .new-question input:focus {
+        outline: 1;
+    }
+
+ul {
+    margin: 0;
+    padding: 0;
+    background: white;
+    margin-top: 10px;
+}
+
+.delete {
+    float: right;
+    font-weight: bold;
+    background: none;
+    font-size: 1em;
+    border: none;
+    position: relative;
+}
+
+li {
+    position: relative;
+    list-style: none;
+    padding: 15px;
+    border-bottom: #eee solid 1px;
+    background-color: #FFC400;
+}
+
+    li .text {
+        margin-left: 10px;
+    }
+
+    li.locked {
+        background-color: #ffafa8;
+    }
+
+    li.private {
+        background: #eee;
+        border-color: #ddd;
+    }
+
+header .hide-completed {
+    float: right;
+}
+
+.toggle-private {
+    margin-left: 5px;
+}
+
+@media (max-width: 600px) {
+    li {
+        padding: 12px 15px;
+    }
+
+    .search {
+        width: 150px;
+        clear: both;
+    }
+
+    .new-question input {
+        padding-bottom: 5px;
+    }
+}
+
+.icon, .qText {
+    display: inline-block;
+}
+
+#formSubmit {
+    display: none;
+}
+
+.emphasis {
+    font-style:italic;
+    color : grey;
+}
