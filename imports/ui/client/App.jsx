@@ -1,5 +1,4 @@
 ﻿import React, { Component, PropTypes } from 'react';
-import ReactDOM from 'react-dom';
 import { createContainer } from 'meteor/react-meteor-data';
 import { Questions } from '../../api/questions';
 import Question from './Question.jsx';
@@ -10,7 +9,7 @@ class App extends Component {
 
         this.state = {
             content: '',
-            hideCompleted : false,
+            hideCompleted: false,
             text: '',
             _id: '',
         };
@@ -18,6 +17,8 @@ class App extends Component {
         this.onEditQuestion = this.onEditQuestion.bind(this);
         this.onTextChanged = this.onTextChanged.bind(this);
         this.onContentChanged = this.onContentChanged.bind(this);
+        this.toggleHideCompleted = this.toggleHideCompleted.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleSubmit(event) {
@@ -26,7 +27,7 @@ class App extends Component {
         const { text, content, _id } = this.state;
 
         if (_id === '') {
-           Questions.insert({ text, content, createdAt: new Date(), });
+           Questions.insert({ text, content, createdAt: new Date() });
         }
         else {
             Questions.update(_id, { $set : { text, content }});
@@ -70,7 +71,7 @@ class App extends Component {
         let filteredQuestions = this.props.questions;
 
         if (this.state.hideCompleted) {
-            filteredQuestions = filteredQuestions.filter(question => !question.checked);
+            filteredQuestions = filteredQuestions.filter(question => !question.locked);
         }
 
         return filteredQuestions.map((question) => (
@@ -86,35 +87,36 @@ class App extends Component {
         return (
              <div className="container">
                  <header>
-                     <h1>Collaborative Question Maker. </h1>
+                     <h1>Collaborative Question Maker.</h1>
                      <label className="hide-completed">
-                     <input type="checkbox" readonly checked={this.state.hideCompleted} onClick={this.toggleHideCompleted.bind(this)} />
-                                           Hide Locked Questions
+                     <input type="checkbox" readonly checked={this.state.hideCompleted} onClick={this.toggleHideCompleted} />
+                      Hide Locked Questions
                      </label>
                      <h5>Questions locked = {this.props.lockedCount}</h5>
-                     <form className="new-question" onSubmit={this.handleSubmit.bind(this)}>
-                         <input type="text" ref="textInput" placeholder="Type a new question." value={this.state.text } onChange={this.onTextChanged}  />
-                         <input type="text" ref="textContent" placeholder="Type new content." value={this.state.content} onChange={this.onContentChanged} />
+                     <form className="new-question" onSubmit={this.handleSubmit}>
+                         {this.state._id !== '' && <label>Editing ID: {this.state._id} </label> }
+                         <input type="text" placeholder="Type a new question." value={this.state.text} onChange={this.onTextChanged}  />
+                         <input type="text" placeholder="Type new content." value={this.state.content} onChange={this.onContentChanged} />
                          <input type="submit" id="formSubmit" />
                       </form>
                       <p className="emphasis">Hit Enter to submit.</p>
                  </header>
-
                  <ul>
                      {this.renderQuestions()}
                  </ul>
-             </div>);
+             </div>
+        );
     }
 }
 
 App.propTypes = {
     questions: PropTypes.array.isRequired,
-    lockedCount : PropTypes.number.isRequired,
+    lockedCount: PropTypes.number.isRequired,
 };
 
 export default createContainer(() => {
     return {
-        questions: Questions.find({}, { sort: { createdAt : -1 } }).fetch(),
-        lockedCount : Questions.find({checked: {$ne: false } }).count(),
+        questions: Questions.find({}, { sort: { createdAt: -1 } }).fetch(),
+        lockedCount: Questions.find({ locked: { $ne: false } }).count(),
     };
 }, App);

@@ -1,7 +1,15 @@
 import React, { Component, PropTypes } from 'react';
 import { Questions } from '../../api/questions.js';
 
-export default class Question extends Component {
+class Question extends Component {
+    constructor(props) {
+        super(props);
+
+        this.toggleLocked = this.toggleLocked.bind(this);
+        this.deleteQuestion = this.deleteQuestion.bind(this);
+        this.setSelected = this.setSelected.bind(this);
+    }
+
     toggleLocked() {
         event.preventDefault();
         Questions.update(this.props.question._id,
@@ -9,7 +17,7 @@ export default class Question extends Component {
         );
     }
 
-    deleteThisTask() {
+    deleteQuestion() {
         Questions.remove(this.props.question._id);
     }
 
@@ -22,12 +30,13 @@ export default class Question extends Component {
 
         return (
             <li className={questionClassName}>
-                <button className="delete" onClick={this.deleteThisTask.bind(this)}>
+                <button className="delete" onClick={this.deleteQuestion}>
                     &times;
                 </button>
                 <span className="icon">
-                    <img src="/lock.png" onClick={this.toggleLocked.bind(this)} />
-                    { !this.props.question.locked && <img src="/pencil.png"  onClick={this.setSelected.bind(this)}/>}
+                    { this.props.question.locked && <img src="/unlock.png" onClick={this.toggleLocked} /> }
+                    { !this.props.question.locked && <img src="/lock.png" onClick={this.toggleLocked} />}
+                    { !this.props.question.locked && <img src="/pencil.png"  onClick={this.setSelected}/>}
                 </span>
                 <span className="text qText"><em>{this.props.question.text}</em><br/>{this.props.question.content}</span>
             </li>
@@ -39,3 +48,5 @@ Question.propTypes = {
     question: PropTypes.object.isRequired,
     onEditQuestion: PropTypes.func.isRequired,
 }
+
+export default Question;
